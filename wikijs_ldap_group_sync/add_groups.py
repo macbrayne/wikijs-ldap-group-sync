@@ -1,13 +1,11 @@
-from graphqlclient import GraphQLClient
-import ldap
 import logging
-from env import *
 
+import ldap
+from graphqlclient import GraphQLClient
 
-import wikijs_utils
 import ldap_utils
-from classes import *
-
+import wikijs_utils
+from env import *
 
 # ---------------------------
 ### SETUP
@@ -28,8 +26,8 @@ client = GraphQLClient(Env.WIKIJS_URL)
 client.inject_token(Env.WIKIJS_TOKEN)
 # ---------------------------
 
-groups = ldap_utils.get_groups_from_ldap(ldap_connection)
-ldap_users = ldap_utils.get_users_from_ldap(ldap_connection)
+groups = ldap_utils.get_ldap_groups(ldap_connection)
+ldap_users = ldap_utils.get_ldap_users(ldap_connection)
 
 wiki_users = wikijs_utils.get_wikijs_users(client)
 wiki_groups = wikijs_utils.get_wikijs_groups(client)

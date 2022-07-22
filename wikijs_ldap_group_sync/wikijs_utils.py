@@ -1,6 +1,7 @@
 from graphqlclient import GraphQLClient
 
 import json
+import logging
 
 from wikijs_ldap_group_sync.classes import WikiUser
 
@@ -36,11 +37,10 @@ def create_wikijs_group(client: GraphQLClient, name: str):
       }
     }
     ''', variables={'name': name})
-    print(_result)
     return _result["data"]["groups"]["create"]["group"]["id"]
 
 def sync_group_membership(client: GraphQLClient, group_id: int, users: list, ldap_users: list):
-    print(users)
+    logging.info(f"Attempting to assign group {group_id} to the following users {users}")
     for user in users:
         for ldap_user in ldap_users:
             if user == ldap_user.cn and ldap_user.wiki_user is not None:
@@ -61,7 +61,7 @@ def assign_wikijs_user_to_group(client: GraphQLClient, group_id: int, user_id: i
             }
           }
     }''', variables={'groupId': group_id, 'userId': user_id})
-    print(_result)
+    logging.debug(_result)
 
 def get_wikijs_users(client: GraphQLClient):
     _result = client.execute('''

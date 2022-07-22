@@ -1,8 +1,9 @@
 from env import *
 from classes import *
 import ldap
+import logging
 
-def get_groups_from_ldap(ldap_connection):
+def get_ldap_groups(ldap_connection):
     # Retrieving groups from LDAP
     search = ldap_connection.search_s(base=Env.GROUPS_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE,
                                       filterstr="(objectClass=posixGroup)", attrlist=['cn', 'memberUid'])
@@ -18,7 +19,7 @@ def get_groups_from_ldap(ldap_connection):
         groups.append(Group(cn=cn, member_uids=member_uids))
     return groups
 
-def get_users_from_ldap(ldap_connection):
+def get_ldap_users(ldap_connection):
     search = ldap_connection.search_s(base=Env.USER_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE,
                                       filterstr=Env.USER_SEARCH_FILTER, attrlist=['uid', 'cn', 'mail'])
 
