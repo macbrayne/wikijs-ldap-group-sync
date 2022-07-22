@@ -11,6 +11,7 @@ class Env:
     ADMIN_BIND_CRED: str = os.environ.get("ADMIN_BIND_CRED")
 
     GROUPS_SEARCH_BASE: str = os.environ.get("GROUPS_SEARCH_BASE")
+    GROUPS_SEARCH_FILTER: str = os.environ.get("GROUPS_SEARCH_FILTER")
 
     USER_SEARCH_BASE: str = os.environ.get("USER_SEARCH_BASE")
     USER_SEARCH_FILTER: str = os.environ.get("USER_SEARCH_FILTER")

@@ -5,8 +5,9 @@ import logging
 
 def get_ldap_groups(ldap_connection):
     # Retrieving groups from LDAP
+    logging.info("Retrieving list group from ldap")
     search = ldap_connection.search_s(base=Env.GROUPS_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE,
-                                      filterstr="(objectClass=posixGroup)", attrlist=['cn', 'memberUid'])
+                                      filterstr=Env.GROUPS_SEARCH_FILTER, attrlist=['cn', 'memberUid'])
     groups = []
 
     for result in search:
