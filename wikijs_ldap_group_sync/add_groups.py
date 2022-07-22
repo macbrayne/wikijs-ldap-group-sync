@@ -44,25 +44,28 @@ for result in search:
     groups.append(Group(cn=cn, member_uids=member_uids))
 
 
-search = ldap_connection.search_s(base=Env.USER_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr=Env.USER_SEARCH_FILTER, attrlist=['cn', 'mail'])
+search = ldap_connection.search_s(base=Env.USER_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr=Env.USER_SEARCH_FILTER, attrlist=['uid', 'cn', 'mail'])
 
 ldap_users = []
 for result in search:
     uid = result[0]
-    cn = result[1]['cn'][0].decode("utf-8")
+    cn = result[1]['uid'][0].decode("utf-8")
     if "mail" not in result[1]:
         continue
     email = result[1]['mail'][0].decode("utf-8")
     ldap_users.append(LDAPUser(uid=uid, cn=cn, email=email))
+
 
 raw_users = util.retrieve_users(client)
 wiki_users = []
 for user in raw_users:
     wiki_users.append(WikiUser(id=user["id"], email=user["email"]))
 
-
-
-util.assign_user(client, 37, 12)
+for ldap_user in ldap_users:
+    for wiki_user in wiki_users:
+        if ldap_user.email == wiki_user.email:
+            ldap_user.wiki_user = wiki_user
+    print(ldap_user)
 
 for group in groups:
     group_id = util.create_group(client, group.cn)

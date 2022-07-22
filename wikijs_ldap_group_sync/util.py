@@ -40,8 +40,8 @@ def create_group(client: GraphQLClient, name: str):
     return _result["data"]["groups"]["create"]["group"]["id"]
 
 def sync_users(client: GraphQLClient, name: str, users: list):
+    print(users)
     # TODO: Sync users
-    yield
 
 def assign_user(client: GraphQLClient, group_id: int, user_id: int):
     _result = client.execute('''
