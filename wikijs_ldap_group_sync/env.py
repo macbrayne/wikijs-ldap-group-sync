@@ -13,3 +13,4 @@ class Env:
     GROUPS_SEARCH_BASE: str = os.environ.get("GROUPS_SEARCH_BASE")
 
     USER_SEARCH_BASE: str = os.environ.get("USER_SEARCH_BASE")
+    USER_SEARCH_FILTER: str = os.environ.get("USER_SEARCH_FILTER")

@@ -1,4 +1,5 @@
 class Group:
+    uid: str
     cn: str
     member_uids: list
 
@@ -13,9 +14,11 @@ class User:
 
 class LDAPUser(User):
     uid: str
-    def __init__(self, email: str, uid: str):
+    cn: str
+    def __init__(self, email: str, cn: str, uid: str):
         super().__init__(email)
         self.uid = uid
+        self.cn = cn
 
 class WikiUser(User):
     id: int

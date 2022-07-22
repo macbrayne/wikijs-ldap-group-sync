@@ -34,6 +34,7 @@ groups = []
 print(search)
 
 for result in search:
+    uid = result[0]
     result = result[1]
     cn = result['cn'][0].decode("utf-8")
     member_uids = []
@@ -43,17 +44,26 @@ for result in search:
     groups.append(Group(cn=cn, member_uids=member_uids))
 
 
-search = ldap_connection.search_s(base=Env.USER_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr="(objectClass=organizationalPerson)", attrlist=['uid', 'mail'])
+search = ldap_connection.search_s(base=Env.USER_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr=Env.USER_SEARCH_FILTER, attrlist=['cn', 'mail'])
 
-print(search)
+ldap_users = []
+for result in search:
+    uid = result[0]
+    cn = result[1]['cn'][0].decode("utf-8")
+    if "mail" not in result[1]:
+        continue
+    email = result[1]['mail'][0].decode("utf-8")
+    ldap_users.append(LDAPUser(uid=uid, cn=cn, email=email))
 
-print(util.retrieve_users(client))
+raw_users = util.retrieve_users(client)
+wiki_users = []
+for user in raw_users:
+    wiki_users.append(WikiUser(id=user["id"], email=user["email"]))
+
+
 
 util.assign_user(client, 37, 12)
 
 for group in groups:
     group_id = util.create_group(client, group.cn)
     util.sync_users(client, group.cn, group.member_uids)
-
-
-# create_group("tes4t")
