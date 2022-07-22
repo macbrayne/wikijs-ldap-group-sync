@@ -4,6 +4,7 @@ class Group:
     uid: str
     cn: str
     member_uids: list
+    id: int
 
     def __init__(self, cn: str, member_uids: list):
         self.cn = cn

@@ -65,8 +65,15 @@ for ldap_user in ldap_users:
     for wiki_user in wiki_users:
         if ldap_user.email == wiki_user.email:
             ldap_user.wiki_user = wiki_user
-    print(ldap_user)
+
+wiki_groups = util.retrieve_groups(client)
 
 for group in groups:
-    group_id = util.create_group(client, group.cn)
-    util.sync_users(client, group.cn, group.member_uids)
+    for wiki_group in wiki_groups:
+        if group.cn == wiki_group["name"]:
+            group.id = wiki_group["id"]
+
+    if group.id is None:
+        group.id = util.create_group(client, group.cn)
+
+    util.sync_users(client, group.id, group.member_uids, ldap_users)
