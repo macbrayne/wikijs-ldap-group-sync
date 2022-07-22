@@ -2,7 +2,7 @@ from graphqlclient import GraphQLClient
 
 import json
 
-def create_group(client: GraphQLClient, name: str):
+def create_wikijs_group(client: GraphQLClient, name: str):
     _result = client.execute('''
     {
       groups {
@@ -39,15 +39,15 @@ def create_group(client: GraphQLClient, name: str):
     print(_result)
     return _result["data"]["groups"]["create"]["group"]["id"]
 
-def sync_users(client: GraphQLClient, group_id: int, users: list, ldap_users: list):
+def sync_group_membership(client: GraphQLClient, group_id: int, users: list, ldap_users: list):
     print(users)
     for user in users:
         for ldap_user in ldap_users:
             if user == ldap_user.cn and ldap_user.wiki_user is not None:
-                assign_user(client, group_id, ldap_user.wiki_user.id)
-    # TODO: Sync users
+                assign_wikijs_user_to_group(client, group_id, ldap_user.wiki_user.id)
 
-def assign_user(client: GraphQLClient, group_id: int, user_id: int):
+
+def assign_wikijs_user_to_group(client: GraphQLClient, group_id: int, user_id: int):
     _result = client.execute('''
         mutation AssignUser($groupId: Int!, $userId: Int!) {
             groups {
@@ -63,7 +63,7 @@ def assign_user(client: GraphQLClient, group_id: int, user_id: int):
     }''', variables={'groupId': group_id, 'userId': user_id})
     print(_result)
 
-def retrieve_users(client: GraphQLClient):
+def get_wikijs_users(client: GraphQLClient):
     _result = client.execute('''
     {
         users {
@@ -77,7 +77,7 @@ def retrieve_users(client: GraphQLClient):
     print(_result)
     return _result["data"]["users"]["list"]
 
-def retrieve_groups(client: GraphQLClient):
+def get_wikijs_groups(client: GraphQLClient):
     _result = client.execute('''
     {
         groups {

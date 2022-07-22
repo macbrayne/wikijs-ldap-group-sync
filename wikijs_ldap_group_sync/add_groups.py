@@ -56,7 +56,7 @@ for result in search:
     ldap_users.append(LDAPUser(uid=uid, cn=cn, email=email))
 
 
-raw_users = util.retrieve_users(client)
+raw_users = util.get_wikijs_users(client)
 wiki_users = []
 for user in raw_users:
     wiki_users.append(WikiUser(id=user["id"], email=user["email"]))
@@ -66,7 +66,7 @@ for ldap_user in ldap_users:
         if ldap_user.email == wiki_user.email:
             ldap_user.wiki_user = wiki_user
 
-wiki_groups = util.retrieve_groups(client)
+wiki_groups = util.get_wikijs_groups(client)
 
 for group in groups:
     for wiki_group in wiki_groups:
@@ -74,6 +74,6 @@ for group in groups:
             group.id = wiki_group["id"]
 
     if group.id is None:
-        group.id = util.create_group(client, group.cn)
+        group.id = util.create_wikijs_group(client, group.cn)
 
-    util.sync_users(client, group.id, group.member_uids, ldap_users)
+    util.sync_group_membership(client, group.id, group.member_uids, ldap_users)
