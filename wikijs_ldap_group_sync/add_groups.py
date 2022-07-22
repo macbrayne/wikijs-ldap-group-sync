@@ -1,12 +1,13 @@
-from dotenv import load_dotenv
+
 from graphqlclient import GraphQLClient
-import os
 import ldap
+import logging
+from env import *
+
 
 import util
 from classes import *
 
-load_dotenv()
 
 
 # ---------------------------
@@ -15,19 +16,20 @@ load_dotenv()
 # LDAP Connection
 ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 try:
-    ldap_connection = ldap.initialize(os.environ.get("LDAP_URL"))
-    ldap_connection.simple_bind_s(os.environ.get("ADMIN_BIND_DN"), os.environ.get("ADMIN_BIND_CRED"))
+    logging.info("Attempting LDAP connection to ", Env.LDAP_URL)
+    ldap_connection = ldap.initialize(Env.LDAP_URL)
+    ldap_connection.simple_bind_s(Env.ADMIN_BIND_DN, Env.ADMIN_BIND_CRED)
 except ldap.SERVER_DOWN as error:
-    print(error)
+    logging.error(error)
     exit(1)
 
 # WikiJS client
-client = GraphQLClient(os.environ.get("WIKIJS_URL"))
-client.inject_token(os.environ.get("WIKIJS_TOKEN"))
+client = GraphQLClient(Env.WIKIJS_URL)
+client.inject_token(Env.WIKIJS_TOKEN)
 # ---------------------------
 
 # Retrieving groups from LDAP
-search = ldap_connection.search_s(base=os.environ.get("GROUPS_SEARCH_BASE"), scope=ldap.SCOPE_SUBTREE, filterstr="(objectClass=posixGroup)", attrlist=['cn', 'memberUid'])
+search = ldap_connection.search_s(base=Env.GROUPS_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr="(objectClass=posixGroup)", attrlist=['cn', 'memberUid'])
 groups = []
 print(search)
 
@@ -41,7 +43,7 @@ for result in search:
     groups.append(Group(cn=cn, member_uids=member_uids))
 
 
-search = ldap_connection.search_s(base=os.environ.get("USER_SEARCH_BASE"), scope=ldap.SCOPE_SUBTREE, filterstr="(objectClass=organizationalPerson)", attrlist=['uid', 'mail'])
+search = ldap_connection.search_s(base=Env.USER_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr="(objectClass=organizationalPerson)", attrlist=['uid', 'mail'])
 
 print(search)
 
