@@ -1,4 +1,3 @@
-
 from graphqlclient import GraphQLClient
 import ldap
 import logging
@@ -32,18 +31,14 @@ client.inject_token(Env.WIKIJS_TOKEN)
 groups = ldap_utils.get_groups_from_ldap(ldap_connection)
 ldap_users = ldap_utils.get_users_from_ldap(ldap_connection)
 
-
-raw_users = wikijs_utils.get_wikijs_users(client)
-wiki_users = []
-for user in raw_users:
-    wiki_users.append(WikiUser(id=user["id"], email=user["email"]))
+wiki_users = wikijs_utils.get_wikijs_users(client)
+wiki_groups = wikijs_utils.get_wikijs_groups(client)
 
 for ldap_user in ldap_users:
     for wiki_user in wiki_users:
         if ldap_user.email == wiki_user.email:
             ldap_user.wiki_user = wiki_user
 
-wiki_groups = wikijs_utils.get_wikijs_groups(client)
 
 for group in groups:
     for wiki_group in wiki_groups:

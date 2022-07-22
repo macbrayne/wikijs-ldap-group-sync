@@ -2,6 +2,9 @@ from graphqlclient import GraphQLClient
 
 import json
 
+from wikijs_ldap_group_sync.classes import WikiUser
+
+
 def create_wikijs_group(client: GraphQLClient, name: str):
     _result = client.execute('''
     {
@@ -12,9 +15,6 @@ def create_wikijs_group(client: GraphQLClient, name: str):
     ''')
     if name in _result:
         return
-    # result = json.loads(result)
-    # result["groups"]["list"]
-    #print(type(result))
 
     # TODO: Implement error checks
     _result = client.execute('''
@@ -74,8 +74,12 @@ def get_wikijs_users(client: GraphQLClient):
         }
     }''')
     _result = json.loads(_result)
-    print(_result)
-    return _result["data"]["users"]["list"]
+
+    wiki_users = []
+    for user in _result["data"]["users"]["list"]:
+        wiki_users.append(WikiUser(id=user["id"], email=user["email"]))
+    return wiki_users
+
 
 def get_wikijs_groups(client: GraphQLClient):
     _result = client.execute('''

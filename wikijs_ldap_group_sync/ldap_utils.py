@@ -7,10 +7,8 @@ def get_groups_from_ldap(ldap_connection):
     search = ldap_connection.search_s(base=Env.GROUPS_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE,
                                       filterstr="(objectClass=posixGroup)", attrlist=['cn', 'memberUid'])
     groups = []
-    print(search)
 
     for result in search:
-        uid = result[0]
         result = result[1]
         cn = result['cn'][0].decode("utf-8")
         member_uids = []
