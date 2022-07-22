@@ -5,9 +5,9 @@ import logging
 from env import *
 
 
-import util
+import wikijs_utils
+import ldap_utils
 from classes import *
-
 
 
 # ---------------------------
@@ -15,6 +15,7 @@ from classes import *
 # ---------------------------
 # LDAP Connection
 ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+ldap_connection = None
 try:
     logging.info("Attempting LDAP connection to ", Env.LDAP_URL)
     ldap_connection = ldap.initialize(Env.LDAP_URL)
@@ -28,35 +29,11 @@ client = GraphQLClient(Env.WIKIJS_URL)
 client.inject_token(Env.WIKIJS_TOKEN)
 # ---------------------------
 
-# Retrieving groups from LDAP
-search = ldap_connection.search_s(base=Env.GROUPS_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr="(objectClass=posixGroup)", attrlist=['cn', 'memberUid'])
-groups = []
-print(search)
-
-for result in search:
-    uid = result[0]
-    result = result[1]
-    cn = result['cn'][0].decode("utf-8")
-    member_uids = []
-    raw_member_uids = result.get('memberUid', [])
-    for raw_member_uid in raw_member_uids:
-        member_uids.append(raw_member_uid.decode("utf-8"))
-    groups.append(Group(cn=cn, member_uids=member_uids))
+groups = ldap_utils.get_groups_from_ldap(ldap_connection)
+ldap_users = ldap_utils.get_users_from_ldap(ldap_connection)
 
 
-search = ldap_connection.search_s(base=Env.USER_SEARCH_BASE, scope=ldap.SCOPE_SUBTREE, filterstr=Env.USER_SEARCH_FILTER, attrlist=['uid', 'cn', 'mail'])
-
-ldap_users = []
-for result in search:
-    uid = result[0]
-    cn = result[1]['uid'][0].decode("utf-8")
-    if "mail" not in result[1]:
-        continue
-    email = result[1]['mail'][0].decode("utf-8")
-    ldap_users.append(LDAPUser(uid=uid, cn=cn, email=email))
-
-
-raw_users = util.get_wikijs_users(client)
+raw_users = wikijs_utils.get_wikijs_users(client)
 wiki_users = []
 for user in raw_users:
     wiki_users.append(WikiUser(id=user["id"], email=user["email"]))
@@ -66,7 +43,7 @@ for ldap_user in ldap_users:
         if ldap_user.email == wiki_user.email:
             ldap_user.wiki_user = wiki_user
 
-wiki_groups = util.get_wikijs_groups(client)
+wiki_groups = wikijs_utils.get_wikijs_groups(client)
 
 for group in groups:
     for wiki_group in wiki_groups:
@@ -74,6 +51,6 @@ for group in groups:
             group.id = wiki_group["id"]
 
     if group.id is None:
-        group.id = util.create_wikijs_group(client, group.cn)
+        group.id = wikijs_utils.create_wikijs_group(client, group.cn)
 
-    util.sync_group_membership(client, group.id, group.member_uids, ldap_users)
+    wikijs_utils.sync_group_membership(client, group.id, group.member_uids, ldap_users)
