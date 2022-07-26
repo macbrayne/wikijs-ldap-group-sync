@@ -40,7 +40,7 @@ def create_wikijs_group(client: GraphQLClient, name: str):
     return _result["data"]["groups"]["create"]["group"]["id"]
 
 def sync_group_membership(client: GraphQLClient, group_id: int, users: list, ldap_users: list):
-    logging.info(f"Attempting to assign group {group_id} to the following users {users}")
+    logging.info(f"Attempting to assign group id {group_id} to the following users: {users}")
     for user in users:
         for ldap_user in ldap_users:
             if user == ldap_user.cn and ldap_user.wiki_user is not None:
