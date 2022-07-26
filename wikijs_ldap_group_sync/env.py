@@ -15,3 +15,5 @@ class Env:
 
     USER_SEARCH_BASE: str = os.environ.get("USER_SEARCH_BASE")
     USER_SEARCH_FILTER: str = os.environ.get("USER_SEARCH_FILTER")
+
+    LOG_LEVEL: str = os.environ.get("LOG_LEVEL", default="INFO")
