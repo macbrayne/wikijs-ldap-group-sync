@@ -3,9 +3,8 @@ import logging
 import ldap
 from graphqlclient import GraphQLClient
 
-import ldap_utils
-import wikijs_utils
-from env import *
+from wikijs_ldap_group_sync.util import ldap_utils, wikijs_utils
+from wikijs_ldap_group_sync.util.env import *
 
 
 def main():

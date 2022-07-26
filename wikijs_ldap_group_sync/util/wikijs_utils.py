@@ -3,7 +3,7 @@ from graphqlclient import GraphQLClient
 import json
 import logging
 
-from wikijs_ldap_group_sync.classes import WikiUser
+from .classes import WikiUser
 
 logger = logging.getLogger("ldap-group-sync:wikijs_utils")
 

@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
+
 
 class Env:
     WIKIJS_URL: str = os.environ.get("WIKIJS_URL")

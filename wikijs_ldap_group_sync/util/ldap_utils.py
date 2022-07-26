@@ -1,7 +1,8 @@
-from env import *
-from classes import *
+from .env import *
 import ldap
 import logging
+
+from .classes import *
 
 logger = logging.getLogger("ldap-group-sync:ldap_utils")
 
