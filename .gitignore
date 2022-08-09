@@ -1,3 +1,4 @@
 .idea
 .env
 dist
+__pycache__
