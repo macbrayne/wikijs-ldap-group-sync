@@ -1,12 +1,13 @@
 # WikiJS LDAP Group Sync
-WikiJS only [plans on integrating](https://js.wiki/feedback/p/group-mapping) syncing
-groups from authentication providers to WikiJS in its 3.0 release making this custom Python script necessary.
+
+WikiJS currently lacks the ability to sync groups from authentication providers to WikiJS.
+They plan to provide a feature like that [in its 3.0 release](https://js.wiki/feedback/p/group-mapping), until then this Python script can help.
 
 ## Architecture
 
-This script relies on the WikiJS GraphQL server to work which unfortunately doesn't provide ways to list users
+This script relies on the WikiJS GraphQL server to get group membership information which unfortunately doesn't provide ways to list users
 together with their ids and group memberships.
-That's why this script has to send as many requests as there are users times the amount of groups.
+Due to that this script has to send as many requests as there are users times the amount of groups.
 
 Roughly speaking the script does the following:
 
@@ -17,7 +18,7 @@ Roughly speaking the script does the following:
 5. Compare data and map group ownership to users
 6. Tell WikiJS to assign groups to users
 
-Because the script has no way of knowing which user is assigned to which group without making individual requests (or batching) to the WikiJS GraphQL API the majority of runtime is going to be spent on the last step.
+Because we have no way of knowing which user is assigned to which group without making individual requests to the WikiJS GraphQL API (or batching them) the majority of runtime is going to be spent on the last step.
 
 ## Installing
 
@@ -50,4 +51,4 @@ By default, WikiJS LDAP Group Sync uses environment variables however you can al
 
 [^1]: Authentication tokens can be generated in the WikiJS Admin Panel under "API Access" 
 
-[^2]: Note that there is currently no support for providing a certificate
+[^2]: Note that there is currently no way of providing a certificate
