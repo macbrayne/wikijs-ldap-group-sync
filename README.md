@@ -48,7 +48,10 @@ By default, WikiJS LDAP Group Sync uses environment variables however you can al
 | GROUPS_SEARCH_FILTER | "(objectClass=posixGroup)"                                                                    | LDAP group search filter                    |
 | USER_SEARCH_BASE     | "CN=Users,DC=example,DC=com"                                                                  | LDAP base users will be searched for under  |
 | USER_SEARCH_FILTER   | "(&(objectClass=organizationalPerson)(memberof=CN=Domain Users,CN=Groups,DC=example,DC=com))" | LDAP user search filter                     |
+ | (optional) LOG_LEVEL | (default) "INFO"                                                                              | Log level to be used [^3]                   |
 
 [^1]: Authentication tokens can be generated in the WikiJS Admin Panel under "API Access" 
 
 [^2]: Note that there is currently no way of providing a certificate
+
+[^3]: server down at "ERROR", group creation at "WARNING", general program flow at "INFO", the results of group assignments at "DEBUG"
