@@ -36,18 +36,18 @@ After cloning the project and installing poetry simply execute `poetry run sync`
 
 By default, WikiJS LDAP Group Sync uses environment variables however you can also provide a `.env` file in the main execution directory.
 
-| Environment Variable | Example                                                                                       | Meaning                                          |
-|----------------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------|
-| WIKIJS_URL           | "https://wiki.example.com/graphql"                                                            | URL of the WikiJS GraphQL endpoint               |
-| WIKIJS_TOKEN         | "Bearer rVcMvDUsAAv4abPxcIEg"                                                                 | Used for authenticating to GraphQL [[1]](#note1) |
-| LDAP_URL             | "ldaps://ldap.example.com:636"                                                                | URL of the LDAP Server [[2]](#note2)             |
-| ADMIN_BIND_DN        | "UID=admin,CN=Users,DC=example,DC=com"                                                        | DN used for authenticating to LDAP               |
-| ADMIN_BIND_CRED      | "supersecretpassword"                                                                         | Password used for authenticating to LDAP         |
-| GROUPS_SEARCH_BASE   | "CN=Groups,DC=example,DC=com"                                                                 | LDAP base groups will be searched for under      |
-| GROUPS_SEARCH_FILTER | "(objectClass=posixGroup)"                                                                    | LDAP group search filter                         |
-| USER_SEARCH_BASE     | "CN=Users,DC=example,DC=com"                                                                  | LDAP base users will be searched for under       |
-| USER_SEARCH_FILTER   | "(&(objectClass=organizationalPerson)(memberof=CN=Domain Users,CN=Groups,DC=example,DC=com))" | LDAP user search filter                          |
+| Environment Variable | Example                                                                                       | Meaning                                     |
+|----------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------|
+| WIKIJS_URL           | "https://wiki.example.com/graphql"                                                            | URL of the WikiJS GraphQL endpoint          |
+| WIKIJS_TOKEN         | "Bearer rVcMvDUsAAv4abPxcIEg"                                                                 | Used for authenticating to GraphQL [^1]     |
+| LDAP_URL             | "ldaps://ldap.example.com:636"                                                                | URL of the LDAP Server [^2]                 |
+| ADMIN_BIND_DN        | "UID=admin,CN=Users,DC=example,DC=com"                                                        | DN used for authenticating to LDAP          |
+| ADMIN_BIND_CRED      | "supersecretpassword"                                                                         | Password used for authenticating to LDAP    |
+| GROUPS_SEARCH_BASE   | "CN=Groups,DC=example,DC=com"                                                                 | LDAP base groups will be searched for under |
+| GROUPS_SEARCH_FILTER | "(objectClass=posixGroup)"                                                                    | LDAP group search filter                    |
+| USER_SEARCH_BASE     | "CN=Users,DC=example,DC=com"                                                                  | LDAP base users will be searched for under  |
+| USER_SEARCH_FILTER   | "(&(objectClass=organizationalPerson)(memberof=CN=Domain Users,CN=Groups,DC=example,DC=com))" | LDAP user search filter                     |
 
-<a name="note1">1</a>: Authentication tokens can be generated in the WikiJS Admin Panel under "API Access" 
+[^1]: Authentication tokens can be generated in the WikiJS Admin Panel under "API Access" 
 
-<a name="note2">2</a>: Note that there is currently no support for providing a certificate
+[^2]: Note that there is currently no support for providing a certificate
