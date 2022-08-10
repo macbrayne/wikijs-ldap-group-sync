@@ -3,6 +3,7 @@
 WikiJS currently lacks the ability to sync groups from authentication providers to WikiJS.
 They plan to provide a feature like that [in its 3.0 release](https://js.wiki/feedback/p/group-mapping), until then this Python script can help.
 
+
 ## Architecture
 
 This script relies on the WikiJS GraphQL server to get group membership information which unfortunately doesn't provide ways to list users
@@ -20,23 +21,24 @@ Roughly speaking the script does the following:
 
 Because we have no way of knowing which user is assigned to which group without making individual requests to the WikiJS GraphQL API (or batching them) the majority of runtime is going to be spent on the last step.
 
+The script itself is stateless, all logging goes to stdout.
+
 ## Installing
 
 ### Docker
 
 Pull from GitHub Container registry:
 ```bash
-docker pull ghcr.io/macbrayne/wikijs-ldap-group-sync:main
+docker pull ghcr.io/macbrayne/wikijs-ldap-group-sync
 ```
 Pull from Docker Hub:
 ```bash
 docker pull macbrayne/wikijs-ldap-group-sync
  ```
 
-Alternatively you can build it yourself:
+Alternatively, you can build it yourself:
 ```bash
 docker build -t macbrayne/wikijs-ldap-group-sync 'https://github.com/macbrayne/wikijs-ldap-group-sync.git#main'
-docker run macbrayne/wikijs-ldap-group-sync
 ```
 
 ### Poetry
