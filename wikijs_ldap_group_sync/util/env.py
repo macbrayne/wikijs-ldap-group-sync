@@ -22,6 +22,9 @@ class Env:
 
     LOG_LEVEL: str = os.environ.get("LOG_LEVEL", default="INFO")
 
+    LDAP_TLS_VERIFICATION: bool = os.environ.get("LDAP_TLS_VERIFICATION")
+    LDAP_TLS_CERT_FILE: str = os.environ.get("LDAP_TLS_CERT_PATH")
+
 
 def check_config():
     do_exit = False
@@ -48,6 +51,8 @@ def check_config():
         do_exit = True
     if Env.USER_SEARCH_FILTER is None:
         logger.warning("USER_SEARCH_FILTER is not set")
+    if Env.LDAP_TLS_VERIFICATION is not None and Env.LDAP_TLS_CERT_FILE is None:
+        logger.warning("LDAP_TLS_VERIFICATION set but LDAP_TLS_CERT_FILE is not set")
 
     if do_exit:
         logger.error("Configuration errors found, exiting")

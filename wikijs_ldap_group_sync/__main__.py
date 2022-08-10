@@ -21,11 +21,26 @@ def main():
     env.check_config()
 
     # LDAP Connection
-    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+    if Env.LDAP_TLS_VERIFICATION is None:
+        ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
     ldap_connection = None
     try:
         logger.info("Attempting LDAP connection to %s", Env.LDAP_URL)
         ldap_connection = ldap.initialize(Env.LDAP_URL)
+
+        # From https://stackoverflow.com/a/61744522
+        ldap_connection.set_option(ldap.OPT_REFERRALS, 0) # To fix Active Directory weirdness
+        ldap_connection.set_option(ldap.OPT_PROTOCOL_VERSION, 3) # To use LDAP v3
+        ldap_connection.set_option(ldap.OPT_X_TLS, ldap.OPT_X_TLS_DEMAND) # Demand TLS
+        ldap_connection.set_option(ldap.OPT_X_TLS_DEMAND, True) # Demand TLS?
+        ldap_connection.set_option(ldap.OPT_DEBUG_LEVEL, 255) # Set Debug Level
+        # This must be the last tls setting to create TLS context.
+        # ldap_connection.set_option(ldap.OPT_X_TLS_NEWCTX, ldap.OPT_ON) # Doesn't work?
+        # End https://stackoverflow.com/a/61744522
+
+        if Env.LDAP_TLS_CERT_FILE is not None:
+            ldap_connection.set_option(ldap.OPT_X_TLS_CACERTFILE, Env.LDAP_TLS_CERT_FILE)
+
         ldap_connection.simple_bind_s(Env.ADMIN_BIND_DN, Env.ADMIN_BIND_CRED)
     except ldap.SERVER_DOWN as error:
         logger.error(error)
