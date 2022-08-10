@@ -33,7 +33,7 @@ Pull from Docker Hub:
 docker pull macbrayne/wikijs-ldap-group-sync
  ```
 
-Alternatively you can build it yourself after checking out the repository:
+Alternatively you can build it yourself:
 ```bash
 docker build -t macbrayne/wikijs-ldap-group-sync 'https://github.com/macbrayne/wikijs-ldap-group-sync.git#main'
 docker run macbrayne/wikijs-ldap-group-sync
