@@ -54,4 +54,4 @@ By default, WikiJS LDAP Group Sync uses environment variables however you can al
 
 [^2]: Note that there is currently no way of providing a certificate
 
-[^3]: server down at "ERROR", group creation at "WARNING", general program flow at "INFO", the results of group assignments at "DEBUG"
+[^3]: Server down at "ERROR", group creation at "WARNING", general program flow at "INFO", the results of group assignments at "DEBUG"
