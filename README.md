@@ -6,9 +6,9 @@ They plan to provide a feature like that [in its 3.0 release](https://js.wiki/fe
 
 ## Architecture
 
-This script relies on the WikiJS GraphQL server to get group membership information which unfortunately doesn't provide ways to list users
-together with their ids and group memberships.
-Due to that this script has to send as many requests as there are users times the amount of groups.
+This script relies on the WikiJS GraphQL server to get group membership information which unfortunately has no way of getting a list of users
+together with their internal ids and group memberships.
+Due to that this script has to send as many requests as there are users times the amount of groups so depending on your network the runtime may vary.
 
 Roughly speaking the script does the following:
 
