@@ -24,14 +24,29 @@ Because we have no way of knowing which user is assigned to which group without 
 
 ### Docker
 
+Pull from GitHub Container registry:
 ```bash
-docker build -t wikijs-ldap-group-sync .
-docker run wikijs-ldap-group-sync
+docker pull ghcr.io/macbrayne/wikijs-ldap-group-sync:main
+```
+Pull from Docker Hub:
+```bash
+docker pull macbrayne/wikijs-ldap-group-sync
+ ```
+
+Alternatively you can build it yourself after checking out the repository:
+```bash
+docker build -t macbrayne/wikijs-ldap-group-sync 'https://github.com/macbrayne/wikijs-ldap-group-sync.git#main'
+docker run macbrayne/wikijs-ldap-group-sync
 ```
 
 ### Poetry
 
-After cloning the project and installing poetry simply execute `poetry run sync` to run the script.
+Depending on your distribution you might have to install additional dependencies before being able to use the script.
+In case of Debian based distributions these dependencies might be:
+```bash
+apt-get install --no-install-recommends build-essential libsasl2-dev libldap2-dev
+```
+Then, after installing poetry simply execute `poetry run sync` to run the script.
 
 ## Configuration
 
