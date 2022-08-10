@@ -1,10 +1,11 @@
 import logging
-
 import ldap
-from graphqlclient import GraphQLClient
 
+import wikijs_ldap_group_sync.util.env as env
+
+from graphqlclient import GraphQLClient
 from wikijs_ldap_group_sync.util import ldap_utils, wikijs_utils
-from wikijs_ldap_group_sync.util.env import *
+from wikijs_ldap_group_sync.util.env import Env
 
 
 def main():
@@ -15,6 +16,9 @@ def main():
     # Logging
     logging.basicConfig(level=Env.LOG_LEVEL)
     logger = logging.getLogger("ldap-group-sync:main")
+
+    # Check Configuration
+    env.check_config()
 
     # LDAP Connection
     ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
