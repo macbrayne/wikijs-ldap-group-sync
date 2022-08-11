@@ -31,7 +31,7 @@ def main():
         # From https://stackoverflow.com/a/61744522
         ldap_connection.set_option(ldap.OPT_REFERRALS, 0) # To fix Active Directory weirdness
         ldap_connection.set_option(ldap.OPT_PROTOCOL_VERSION, 3) # To use LDAP v3
-        ldap_connection.set_option(ldap.OPT_X_TLS, ldap.OPT_X_TLS_DEMAND) # Demand TLS
+        # ldap_connection.set_option(ldap.OPT_X_TLS, ldap.OPT_X_TLS_DEMAND) # Demand TLS
         ldap_connection.set_option(ldap.OPT_X_TLS_DEMAND, True) # Demand TLS?
         ldap_connection.set_option(ldap.OPT_DEBUG_LEVEL, 255) # Set Debug Level
         # This must be the last tls setting to create TLS context.
