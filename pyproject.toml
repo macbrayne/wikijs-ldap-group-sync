@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wikijs-ldap-group-sync"
-version = "0.2.1"
+version = "0.2.2"
 description = "Sync LDAP Groups to WikiJS"
 authors = ["Florentin Schleuß <git@macbrayne.de>"]
 
