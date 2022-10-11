@@ -9,6 +9,7 @@ class Group:
     def __init__(self, cn: str, member_uids: list):
         self.cn = cn
         self.member_uids = member_uids
+        self.id = None
 
 class User:
     email: str
